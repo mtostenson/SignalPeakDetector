@@ -6,33 +6,30 @@
 #define _PEAKDETECTOR_H_
 
 #include <stdio.h>
+#include <cmath>
 #include <fstream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 class PeakDetector
 {	
 public:
-	static PeakDetector* instance();
-	void analyze(std::string& filename);
-	std::ifstream* get_fs() { return &fs; }
+	PeakDetector(char*&);
+	void analyze();
+	void print(std::vector<double>&);
 private:
-	static PeakDetector* m_instance;
-	PeakDetector(){}
 	std::ifstream fs;
+	std::vector<double> values;
+	std::vector<double> differences;
+	std::vector<double> averages;
+	std::vector<double>::iterator iter;
 };
 
 int main(int argc, char* argv[])
 {
-	PeakDetector* pd = PeakDetector::instance();
 	if(argc > 1)
-	{
-		pd->get_fs()->open(argv[1]);
-		if(pd->get_fs()->is_open())
-			fprintf(stdout, "File opened successfully.\n");
-		else
-			fprintf(stderr, "File \'%s\' not opened.\n", argv[1]);
-	}
+		PeakDetector PeakDetector(argv[1]);
 	else
 		fprintf(stderr, "Please give data source filename as first parameter.\n");
 	return 0;
