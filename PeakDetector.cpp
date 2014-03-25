@@ -7,10 +7,7 @@ PeakDetector::PeakDetector(char*& filename)
 	if(fs.is_open())
 		analyze();
 	else
-	{
 		fprintf(stderr, "File \'%s\' not opened.\n", filename);
-		return;
-	}
 }
 
 void PeakDetector::analyze()
@@ -22,22 +19,29 @@ void PeakDetector::analyze()
 		values.push_back(buffer);
 	}
 
-	int count, sum;
-	double d1, d2;
-	for(iter = values.begin(); iter != values.end(); iter++, count++)
+	// Gathering all slopes
+	double p1, p2, slope_sum;
+	for(iter = values.begin(); iter < values.end(); iter++)
 	{
-		d1 = d2;
-		d2 = *iter;
-		differences.push_back(d2 - d1);
-		sum += (d2 - d1);
-		if(!(count % 8))
-		{
-			averages.push_back(sum / 8.0);
-			sum = 0;
-		}
+		p2 = *iter;
+		slopes.push_back(p2 - p1);
+		slope_sum += (p2 - p1);
+		p1 = p2;
 	}
-	//sort(averages.begin(), averages.end());
-	print(differences);
+	print(slopes);
+
+	// Gathering rising edges
+	for(iter = values.begin(); iter < values.end(); iter++)
+	{
+		if(*iter < p2)
+		{
+			if(p2 > p1)
+				rising_edges.push_back(p2 - p1);
+			p1 = *iter;			
+		}
+		else
+			p2 = *iter;
+	}
 }
 
 void PeakDetector::print(vector<double>& vec)

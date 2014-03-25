@@ -21,8 +21,8 @@ public:
 private:
 	std::ifstream fs;
 	std::vector<double> values;
-	std::vector<double> differences;
-	std::vector<double> averages;
+	std::vector<double> slopes;
+	std::vector<double> rising_edges;
 	std::vector<double>::iterator iter;
 };
 
