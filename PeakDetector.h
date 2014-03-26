@@ -18,11 +18,21 @@ public:
 	PeakDetector(char*&);
 	void analyze();
 	void print(std::vector<double>&);
-private:
+private:	
+	class Spike
+	{
+	public:
+		Spike(double p1_in, double p2_in, double p3_in)
+		: p1(p1_in)
+		, p2(p2_in)
+		, p3(p3_in){}
+		double length(){ return (p2 - p1) + (p2 - p3); }
+		double p1, p2, p3;
+	};
 	std::ifstream fs;
 	std::vector<double> values;
-	std::vector<double> slopes;
-	std::vector<double> rising_edges;
+	std::vector<Spike*> spikes;
+	std::vector<double> peaks;
 	std::vector<double>::iterator iter;
 };
 
