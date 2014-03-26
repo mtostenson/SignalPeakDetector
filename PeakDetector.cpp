@@ -1,19 +1,40 @@
 #include "PeakDetector.h"
 using namespace std;
 
-// Constants
+// Constants ----------------------------------------------
 const double c_THRESHOLD = 3.0;
 const int c_RANGE = 10;
+//---------------------------------------------------------
 
+//---------------------------------------------------------
+// PeakDetector Constructor
+//
+// Attempts to open file received as parameter. Continues
+//   execution if successful, otherwise exits program.
+//---------------------------------------------------------
 PeakDetector::PeakDetector(char*& filename)
 {
 	fs.open(filename);
-	if(fs.is_open())
+	if (fs.is_open())
+	{
 		analyze();
+		print(peaks);
+	}
 	else
 		fprintf(stderr, "File \'%s\' not opened.\n", filename);
 }
 
+//---------------------------------------------------------
+// PeakDetector::analyze()
+//
+// Detects peak values from the input data. The data is
+//   evaluated into discreet 'spikes.' 
+// The length of each spike is calculated and compared to 
+//   the average of its neighboring spikes based on 
+//   c_RANGE, and is considered a peak if its length is 
+//   greater than the neighboring averages multiplied by 
+//   c_THRESHOLD.
+//---------------------------------------------------------
 void PeakDetector::analyze()
 {
 	double buffer;
@@ -24,9 +45,7 @@ void PeakDetector::analyze()
 	}	
 	int num_spikes;
 	double* p1, *p2, *p3;
-	p2 = p3 = NULL;
-	iter = values.begin();
-	p1 = &*iter;
+	p1 = &*values.begin();
 	for (iter = values.begin(); iter + 1 < values.end(); iter++)
 	{
 		if (*(iter + 1) < *iter)
@@ -51,7 +70,6 @@ void PeakDetector::analyze()
 	{
 		vector<Spike*>::iterator spike_iter2;
 		double local_avg;
-
 		if (spike_iter < spikes.begin() + c_RANGE)
 		{
 			spike_iter2 = spike_iter + 1;
@@ -81,9 +99,13 @@ void PeakDetector::analyze()
 		if ((*spike_iter)->length() >(c_THRESHOLD * local_avg))
 			peaks.push_back((*spike_iter)->p2);
 	}
-	print(peaks);
 }
 
+//---------------------------------------------------------
+// PeakDetector::print
+//
+// Prints all the values in a vector of doubles.
+//---------------------------------------------------------
 void PeakDetector::print(vector<double>& vec)
 {
 	for(iter = vec.begin(); iter != vec.end(); iter++)

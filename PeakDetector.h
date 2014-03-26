@@ -1,5 +1,11 @@
 //---------------------------------------------------------
 // PeakDetector.h
+//
+// Michael Tostenson
+// March 25, 2014
+//
+// Interview assignment for DataRay Inc.
+// Simple class that reads signal data and detects peaks.
 //---------------------------------------------------------
 
 #ifndef _PEAKDETECTOR_H_
