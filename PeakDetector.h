@@ -12,11 +12,9 @@
 #define _PEAKDETECTOR_H_
 
 #include <stdio.h>
-#include <cmath>
 #include <fstream>
 #include <vector>
 #include <string>
-#include <algorithm>
 
 class PeakDetector
 {	

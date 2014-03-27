@@ -3,7 +3,7 @@ using namespace std;
 
 // Constants ----------------------------------------------
 const double c_THRESHOLD = 3.0;
-const int c_RANGE = 10;
+const int c_RANGE = 20;
 //---------------------------------------------------------
 
 //---------------------------------------------------------
@@ -28,7 +28,7 @@ PeakDetector::PeakDetector(char*& filename)
 // PeakDetector::analyze()
 //
 // Detects peak values from the input data. The data is
-//   evaluated into discreet 'spikes.' 
+//   evaluated into discrete 'spikes.' 
 // The length of each spike is calculated and compared to 
 //   the average of its neighboring spikes based on 
 //   c_RANGE, and is considered a peak if its length is 
@@ -94,9 +94,8 @@ void PeakDetector::analyze()
 					local_avg += (*spike_iter2)->length();
 			}
 		}
-
 		local_avg = local_avg / c_RANGE;
-		if ((*spike_iter)->length() >(c_THRESHOLD * local_avg))
+		if ((*spike_iter)->length() > (c_THRESHOLD * local_avg))
 			peaks.push_back((*spike_iter)->p2);
 	}
 }
