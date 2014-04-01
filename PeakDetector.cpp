@@ -2,8 +2,8 @@
 using namespace std;
 
 // Constants ----------------------------------------------
-const double c_THRESHOLD = 3.0;
-const int c_RANGE = 20;
+#define c_THRESHOLD 3.0
+#define c_RANGE 20
 //---------------------------------------------------------
 
 //---------------------------------------------------------
